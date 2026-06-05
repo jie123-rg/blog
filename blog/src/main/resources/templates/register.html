@@ -1,0 +1,119 @@
+<!-- register.html 美化版 -->
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>注册</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f0f2f5;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+            overflow: hidden;
+            width: 100%;
+            max-width: 400px;
+        }
+        .card-header {
+            background-color: #27ae60;
+            color: white;
+            text-align: center;
+            padding: 1.2rem;
+            font-weight: 600;
+            font-size: 1.25rem;
+        }
+        .card-body {
+            padding: 2rem;
+        }
+        .form-control {
+            border-radius: 6px;
+            padding: 0.75rem;
+            margin-bottom: 1rem;
+            border: 1px solid #ddd;
+            transition: all 0.2s ease;
+        }
+        .form-control:focus {
+            border-color: #27ae60;
+            box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.1);
+            outline: none;
+        }
+        .btn {
+            border-radius: 6px;
+            padding: 0.75rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .form-check-input:checked {
+            background-color: #27ae60;
+            border-color: #27ae60;
+        }
+        .form-check {
+            margin-bottom: 1.5rem;
+        }
+        .alert {
+            border-radius: 6px;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        .text-center {
+            margin-top: 1.5rem;
+        }
+        a {
+            color: #27ae60;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+        a:hover {
+            color: #219653;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body class="bg-light">
+<div class="card">
+    <div class="card-header">用户注册</div>
+    <div class="card-body">
+        <form method="post">
+            <div class="mb-3">
+                <label>用户名</label>
+                <input type="text" name="username" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label>密码</label>
+                <input type="password" name="password" class="form-control" required>
+            </div>
+
+            <!-- 身份选择 -->
+            <div class="mb-3">
+                <label class="form-label">身份</label>
+                <div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="role" value="1" checked>
+                        <label class="form-check-label">用户</label>
+                    </div>
+                </div>
+            </div>
+
+            <div th:if="${param.error}" class="alert alert-danger" th:text="${param.error}"></div>
+
+            <button class="btn btn-success w-100">注册</button>
+        </form>
+        <div class="text-center mt-3">
+            <a href="/login">已有账号？去登录</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

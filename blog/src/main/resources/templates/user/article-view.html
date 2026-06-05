@@ -1,0 +1,267 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>文章详情</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <style>
+        :root {
+            --primary-color: #4361ee;
+            --secondary-color: #3a0ca3;
+            --light-color: #f8f9fa;
+            --dark-color: #212529;
+            --gray-color: #6c757d;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        /* 导航栏 */
+        .navbar {
+            background: rgba(255, 255, 255, 0.95) !important;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+            border-bottom: 1px solid rgba(67, 97, 238, 0.1);
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+            background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-link {
+            color: var(--dark-color) !important;
+            font-weight: 500;
+            padding: 0.5rem 1rem !important;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: var(--primary-color) !important;
+            background: rgba(67, 97, 238, 0.08);
+        }
+
+        /* 文章容器 */
+        .article-container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            padding: 2.5rem;
+            margin-top: 2rem;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .article-title {
+            font-weight: 700;
+            color: var(--dark-color);
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            line-height: 1.3;
+        }
+
+        .article-meta {
+            color: var(--gray-color);
+            font-size: 0.9rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .article-meta i {
+            color: var(--primary-color);
+            margin-right: 0.5rem;
+        }
+
+        .article-content {
+            line-height: 1.8;
+            font-size: 1.1rem;
+            color: #333;
+        }
+
+        .article-content p {
+            margin-bottom: 1.5rem;
+        }
+
+        /* 评论区域 */
+        .comment-section {
+            margin-top: 3rem;
+        }
+
+        .section-title {
+            font-weight: 600;
+            color: var(--dark-color);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        .comment-card {
+            background: #f8f9fa;
+            border-radius: 10px;
+            border: 1px solid #eee;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .comment-card:hover {
+            background: white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transform: translateY(-2px);
+        }
+
+        .comment-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .comment-user {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .comment-time {
+            color: var(--gray-color);
+            font-size: 0.85rem;
+        }
+
+        .comment-content {
+            color: #444;
+            line-height: 1.6;
+        }
+
+        /* 评论表单 */
+        .comment-form {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(67, 97, 238, 0.1);
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.25rem rgba(67, 97, 238, 0.25);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
+            border: none;
+            padding: 0.6rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(67, 97, 238, 0.3);
+        }
+
+        .btn-outline-danger {
+            border-width: 2px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .btn-outline-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(220, 53, 69, 0.3);
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light">
+    <div class="container">
+        <a class="navbar-brand" href="/">
+            <i class="bi bi-pen me-2"></i>我的博客
+        </a>
+        <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="/back">
+                    <i class="bi bi-arrow-left me-1"></i>返回
+                </a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="article-container">
+        <h1 class="article-title" th:text="${a.title}"></h1>
+        <div class="article-meta">
+            <i class="bi bi-calendar3"></i>
+            <span th:text="${#temporals.format(a.createTime,'yyyy年MM月dd日 HH:mm')}"></span>
+            <i class="bi bi-eye ms-3"></i>
+            <span th:text="${a.viewNum}"></span>次阅读
+        </div>
+
+        <div class="article-content" th:utext="${a.content}"></div>
+
+        <!-- 发表评论 -->
+        <div class="comment-section">
+            <h5 class="section-title">发表评论</h5>
+            <div class="comment-form">
+                <form th:action="@{/user/comment/submit}" method="post">
+                    <input type="hidden" name="articleId" th:value="${a.id}">
+                    <div class="mb-3">
+                        <textarea name="content" class="form-control" rows="4"
+                                  placeholder="分享你的想法..." required
+                                  style="border-radius: 8px;"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-send me-1"></i>提交评论
+                    </button>
+                </form>
+            </div>
+
+            <!-- 评论列表 -->
+            <h5 class="section-title">评论列表</h5>
+            <div th:if="${comments.empty}" class="text-center text-muted py-5">
+                <i class="bi bi-chat-dots display-4"></i>
+                <p class="mt-3">暂无评论，快来发表第一条评论吧！</p>
+            </div>
+
+            <div th:unless="${comments.empty}">
+                <div class="comment-card" th:each="c:${comments}">
+                    <div class="comment-header">
+                        <div>
+                            <span class="comment-user">
+                                <i class="bi bi-person-circle me-2"></i>
+                                <span th:text="${userMap[c.userId]}"></span>
+                            </span>
+                        </div>
+                        <div class="d-flex align-items-center gap-3">
+                            <span class="comment-time" th:text="${#temporals.format(c.createTime,'MM-dd HH:mm')}"></span>
+                            <span th:if="${c.userId == loginUser.id}">
+                                <a th:href="@{/user/comments/delete/{id}(id=${c.id})}"
+                                   class="btn btn-sm btn-outline-danger"
+                                   onclick="return confirm('确定删除这条评论吗？')">
+                                    <i class="bi bi-trash"></i>
+                                </a>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="comment-content" th:text="${c.content}"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
